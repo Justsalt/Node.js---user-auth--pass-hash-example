@@ -84,24 +84,62 @@ module.exports = {
     });
   },
   postCategory: async (req, res) => {
+    const photoArr = [];
     const {
       category,
       title,
       searchingOrOffer,
       description,
       price,
-      photo,
+      photoOne,
+      photoTwo,
+      photoThree,
+      photoFour,
+
       condition,
     } = req.body;
-    console.log(category);
-    console.log(title);
-    console.log(searchingOrOffer);
-    console.log(description);
-    console.log(price);
-    console.log(photo);
-    console.log(condition);
+    // console.log(category);
+    // console.log(title);
+    // console.log(searchingOrOffer);
+    // console.log(description);
+    // console.log(price);
+    // console.log(photoOne);
+    // console.log(photoTwo);
+    // console.log(photoThree);
+    // console.log(photoFour);
+    // console.log(condition);
+    if (photoOne) {
+      photoArr.push(photoOne);
+    }
+    if (photoTwo) {
+      photoArr.push(photoTwo);
+    }
+    if (photoThree) {
+      photoArr.push(photoThree);
+    }
+    if (photoFour) {
+      photoArr.push(photoFour);
+    }
+    // console.log(photoArr);
+
+    const createPost = await categoriesPostSchema({
+      category,
+      title,
+      searchingOrOffer,
+      description,
+      price,
+      photo: {
+        photoList: photoArr,
+      },
+      condition,
+      user: req.session.email,
+    });
+    createPost.save();
+    console.log(createPost);
+    console.log(req.session);
     return res.status(200).send({
-      msg: "Category Is Created",
+      msg: "Skelbimas Sekmingai Įdėtas",
+      post: createPost,
     });
   },
 };

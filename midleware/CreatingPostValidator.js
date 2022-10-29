@@ -11,14 +11,14 @@ module.exports = {
       photoTwo,
       photoThree,
       photoFour,
-      photoFive,
+
       condition,
     } = req.body;
     const isValidUrlOne = await isImageURL(photoOne);
     const isValidUrlTwo = await isImageURL(photoTwo);
     const isValidUrlThree = await isImageURL(photoThree);
     const isValidUrlFour = await isImageURL(photoFour);
-    const isValidUrlFive = await isImageURL(photoFive);
+
     if (title.length <= 1) {
       return res.status(400).send({
         msg: "Skelbimo Antraštė turi būti ilgesne nei vienas simbolis.!",
@@ -65,5 +65,6 @@ module.exports = {
           .send({ msg: "Nuotrauka (4) turi prasidėti su HTTP" });
       }
     }
+    next();
   },
 };

@@ -23,10 +23,13 @@ const Categories = new Schema({
     required: true,
   },
   photo: {
+    photoList: [],
+  },
+  condition: {
     type: String,
     required: true,
   },
-  condition: {
+  user: {
     type: String,
     required: true,
   },
