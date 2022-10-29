@@ -11,6 +11,8 @@ const {
   userDataExtra,
   userDataGet,
   postCategory,
+  getAllCreatedPosts,
+  getUserPost,
 } = require("../controllers/MainController");
 
 router.post("/register", emailValid, passwordValidator, register);
@@ -19,6 +21,8 @@ router.get("/logOut", logOut);
 router.post("/userData", profileValid, userDataExtra);
 router.get("/userDataGet", userDataGet);
 router.post("/categoryPost", postValidator, postCategory);
+router.get("/getAllPosts", getAllCreatedPosts);
+router.get("/userPost", getUserPost);
 
 module.exports = router;
 

@@ -142,4 +142,20 @@ module.exports = {
       post: createPost,
     });
   },
+  getUserPost: async (req, res) => {
+    const { email: userEmail } = req.session;
+    const userPost = await categoriesPostSchema.find({ email: userEmail });
+    console.log(userPost);
+    return res.status(200).send({
+      msg: "Rasti Visi Postai",
+      post: userPost,
+    });
+  },
+  getAllCreatedPosts: async (req, res) => {
+    const allPosts = await categoriesPostSchema.find();
+    return res.status(200).send({
+      msg: "Rasti Visi Postai",
+      posts: allPosts,
+    });
+  },
 };
