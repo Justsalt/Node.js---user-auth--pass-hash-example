@@ -2,12 +2,23 @@ const express = require("express");
 const router = express.Router();
 const { passwordValidator } = require("../midleware/passwordValidator");
 const { emailValid } = require("../midleware/EmailValidator");
-const { register } = require("../controllers/createUser");
-const { login } = require("../controllers/login");
-const { isAuth } = require("../midleware/cookies");
+const { profileValid } = require("../midleware/ProfileValidator");
+const { postValidator } = require("../midleware/CreatingPostValidator");
+const {
+  register,
+  login,
+  logOut,
+  userDataExtra,
+  userDataGet,
+  postCategory,
+} = require("../controllers/MainController");
 
 router.post("/register", emailValid, passwordValidator, register);
-router.post("/login", isAuth, login);
+router.post("/login", login);
+router.get("/logOut", logOut);
+router.post("/userData", profileValid, userDataExtra);
+router.get("/userDataGet", userDataGet);
+router.post("/categoryPost", postValidator, postCategory);
 
 module.exports = router;
 

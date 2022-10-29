@@ -10,8 +10,35 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  secret: {
+  name: {
     type: String,
+    required: false,
+  },
+  surname: {
+    type: String,
+    required: false,
+  },
+  phone: {
+    type: String,
+    required: false,
+  },
+  city: {
+    type: String,
+    required: false,
+  },
+  privateOrUab: {
+    type: String,
+    required: false,
+  },
+  address: {
+    type: String,
+    required: false,
+  },
+  photo: {
+    type: String,
+    required: false,
+    default:
+      "https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png",
   },
 });
 

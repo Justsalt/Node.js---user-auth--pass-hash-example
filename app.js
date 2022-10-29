@@ -3,7 +3,23 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/router");
+const session = require("express-session");
 
+app.use(
+  session({
+    secret: "fsdfsdfsdfsdfsdfsd",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    method: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
 mongoose
   .connect(
     "mongodb+srv://admin:admin@cluster0.8nlynj9.mongodb.net/?retryWrites=true&w=majority"
@@ -14,8 +30,6 @@ mongoose
   .catch((e) => {
     console.log("CONNECTION ERROR");
   });
-
-app.use(cors());
 
 app.use(express.json());
 
