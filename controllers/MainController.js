@@ -159,32 +159,59 @@ module.exports = {
       msg: "Ištintas Postas",
     });
   },
-  // EditUserPost: async (req, res) => {
-  //   // const { name, surname, phone, city, privateOrUab, address, photo } =
-  //   //   req.body;
+  EditUserPost: async (req, res) => {
+    const photoArr = [];
+    const {
+      category,
+      title,
+      searchingOrOffer,
+      description,
+      price,
+      photoOne,
+      photoTwo,
+      photoThree,
+      photoFour,
+      condition,
+      userId,
+    } = req.body;
+    console.log(userId);
 
-  //   // const { email } = req.session;
+    if (photoOne) {
+      photoArr.push(photoOne);
+    }
+    if (photoTwo) {
+      photoArr.push(photoTwo);
+    }
+    if (photoThree) {
+      photoArr.push(photoThree);
+    }
+    if (photoFour) {
+      photoArr.push(photoFour);
+    }
 
-  //   const updateExistUser = await usersSchema.findOneAndUpdate(
-  //     { email: email },
-  //     {
-  //       $set: {
-  //         name,
-  //         surname,
-  //         phone,
-  //         email,
-  //         city,
-  //         privateOrUab,
-  //         address,
-  //         photo,
-  //       },
-  //     },
-  //     { new: true }
-  //   );
+    const updateExsitPost = await categoriesPostSchema.findOneAndUpdate(
+      { _id: userId },
+      {
+        $set: {
+          category,
+          title,
+          searchingOrOffer,
+          description,
+          price,
+          photo: {
+            photoList: photoArr,
+          },
+          condition,
+          user: req.session.email,
+          postId: req.session.postId,
+        },
+      },
+      { new: true }
+    );
 
-  //   return res.status(200).send({
-  //     msg: "Atnaujinti Posto Duomenys!",
-  //     // user: updateExistUser,
-  //   });
-  // },
+    return res.status(200).send({
+      msg: "Atnaujinti Posto Duomenys!",
+      userPost: updateExsitPost,
+    });
+  },
 };

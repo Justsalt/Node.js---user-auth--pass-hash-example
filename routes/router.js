@@ -14,6 +14,7 @@ const {
   getAllCreatedPosts,
   getUserPost,
   getFindAndDeletePost,
+  EditUserPost,
 } = require("../controllers/MainController");
 
 router.post("/register", emailValid, passwordValidator, register);
@@ -25,6 +26,7 @@ router.post("/categoryPost", postValidator, postCategory);
 router.get("/getAllPosts", getAllCreatedPosts);
 router.get("/userPost", getUserPost);
 router.get("/deletePost/:id", getFindAndDeletePost);
+router.post("/editActivePost", postValidator, EditUserPost);
 
 module.exports = router;
 
