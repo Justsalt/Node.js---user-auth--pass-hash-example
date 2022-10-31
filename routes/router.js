@@ -13,6 +13,7 @@ const {
   postCategory,
   getAllCreatedPosts,
   getUserPost,
+  getFindAndDeletePost,
 } = require("../controllers/MainController");
 
 router.post("/register", emailValid, passwordValidator, register);
@@ -23,6 +24,7 @@ router.get("/userDataGet", userDataGet);
 router.post("/categoryPost", postValidator, postCategory);
 router.get("/getAllPosts", getAllCreatedPosts);
 router.get("/userPost", getUserPost);
+router.get("/deletePost/:id", getFindAndDeletePost);
 
 module.exports = router;
 

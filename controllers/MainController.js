@@ -67,7 +67,6 @@ module.exports = {
       },
       { new: true }
     );
-    console.log(updateExistUser);
 
     return res.status(200).send({
       msg: "Atnaujinti Duomenys!",
@@ -77,7 +76,7 @@ module.exports = {
   userDataGet: async (req, res) => {
     const { email } = req.session;
     const userData = await usersSchema.find({ email });
-    console.log(userData);
+
     return res.status(200).send({
       msg: "You have updated your profile info!",
       user: userData,
@@ -85,6 +84,7 @@ module.exports = {
   },
   postCategory: async (req, res) => {
     const photoArr = [];
+
     const {
       category,
       title,
@@ -98,16 +98,7 @@ module.exports = {
 
       condition,
     } = req.body;
-    // console.log(category);
-    // console.log(title);
-    // console.log(searchingOrOffer);
-    // console.log(description);
-    // console.log(price);
-    // console.log(photoOne);
-    // console.log(photoTwo);
-    // console.log(photoThree);
-    // console.log(photoFour);
-    // console.log(condition);
+
     if (photoOne) {
       photoArr.push(photoOne);
     }
@@ -133,10 +124,10 @@ module.exports = {
       },
       condition,
       user: req.session.email,
+      postId: req.session.postId,
     });
     createPost.save();
-    console.log(createPost);
-    console.log(req.session);
+
     return res.status(200).send({
       msg: "Skelbimas Sekmingai Įdėtas",
       post: createPost,
@@ -145,9 +136,9 @@ module.exports = {
   getUserPost: async (req, res) => {
     const { email: userEmail } = req.session;
     const userPost = await categoriesPostSchema.find({ email: userEmail });
-    console.log(userPost);
+
     return res.status(200).send({
-      msg: "Rasti Visi Postai",
+      msg: "Rasti Visi Userio Postai",
       post: userPost,
     });
   },
@@ -158,4 +149,42 @@ module.exports = {
       posts: allPosts,
     });
   },
+  getFindAndDeletePost: async (req, res) => {
+    const { id } = req.params;
+
+    const post = await categoriesPostSchema.findOneAndDelete({
+      _id: id,
+    });
+    return res.status(200).send({
+      msg: "Ištintas Postas",
+    });
+  },
+  // EditUserPost: async (req, res) => {
+  //   // const { name, surname, phone, city, privateOrUab, address, photo } =
+  //   //   req.body;
+
+  //   // const { email } = req.session;
+
+  //   const updateExistUser = await usersSchema.findOneAndUpdate(
+  //     { email: email },
+  //     {
+  //       $set: {
+  //         name,
+  //         surname,
+  //         phone,
+  //         email,
+  //         city,
+  //         privateOrUab,
+  //         address,
+  //         photo,
+  //       },
+  //     },
+  //     { new: true }
+  //   );
+
+  //   return res.status(200).send({
+  //     msg: "Atnaujinti Posto Duomenys!",
+  //     // user: updateExistUser,
+  //   });
+  // },
 };
