@@ -135,7 +135,7 @@ module.exports = {
   },
   getUserPost: async (req, res) => {
     const { email: userEmail } = req.session;
-    const userPost = await categoriesPostSchema.find({ email: userEmail });
+    const userPost = await categoriesPostSchema.find({ user: userEmail });
 
     return res.status(200).send({
       msg: "Rasti Visi Userio Postai",
@@ -212,6 +212,18 @@ module.exports = {
     return res.status(200).send({
       msg: "Atnaujinti Posto Duomenys!",
       userPost: updateExsitPost,
+    });
+  },
+  getFourPosts: async (req, res) => {
+    const posts = await categoriesPostSchema
+      .find()
+      .limit(4)
+      .sort({ $natural: -1 });
+
+    console.log(posts);
+    return res.status(200).send({
+      msg: "Keturi Naujausi Postai surasti",
+      post: posts,
     });
   },
 };
