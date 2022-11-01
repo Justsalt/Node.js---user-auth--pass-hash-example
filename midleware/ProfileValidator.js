@@ -12,10 +12,10 @@ module.exports = {
     } = req.body;
     const isValidUrl = await isImageURL(photo);
 
-    if (!name.length > 0) {
+    if (!name.length > 0 || !name.length <= 20) {
       return res
         .status(400)
-        .send({ msg: "Vardas turi buti ilgesnis nei viena raidė.!" });
+        .send({ msg: "Vardas turi buti tarp 1 ir 20 simbolių!" });
     }
     if (!surname.length > 0) {
       return res
