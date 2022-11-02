@@ -40,6 +40,10 @@ const userSchema = new Schema({
     default:
       "https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png",
   },
+  date: {
+    type: String,
+    required: true,
+  },
 });
 
 const exportUser = mongoose.model("Register-User", userSchema);
