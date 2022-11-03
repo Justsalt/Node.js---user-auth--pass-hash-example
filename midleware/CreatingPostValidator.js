@@ -19,14 +19,14 @@ module.exports = {
     const isValidUrlThree = await isImageURL(photoThree);
     const isValidUrlFour = await isImageURL(photoFour);
 
-    if (title.length <= 1) {
+    if (title.length < 1 || title.length >= 20) {
       return res.status(400).send({
-        msg: "Skelbimo Antraštė turi būti ilgesne nei vienas simbolis.!",
+        msg: "Skelbimo Antraštė turi būti tarp 1-20 simbolių,.!",
       });
     }
-    if (!price) {
+    if (price.length < 1 || price.length > 7) {
       return res.status(400).send({
-        msg: "kaina nebuvo nurodyta!",
+        msg: "Maksimali kaina yra 7 Skaičių.",
       });
     }
     if (description.length < 1 || description.length >= 125) {

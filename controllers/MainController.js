@@ -111,7 +111,6 @@ module.exports = {
     if (photoFour) {
       photoArr.push(photoFour);
     }
-    // console.log(photoArr);
 
     const createPost = await categoriesPostSchema({
       category,
@@ -174,7 +173,6 @@ module.exports = {
       condition,
       userId,
     } = req.body;
-    console.log(userId);
 
     if (photoOne) {
       photoArr.push(photoOne);
@@ -214,16 +212,71 @@ module.exports = {
       userPost: updateExsitPost,
     });
   },
-  getFourPosts: async (req, res) => {
-    const posts = await categoriesPostSchema
+  GetLimitedCreatedPosts: async (req, res) => {
+    const newPosts = await categoriesPostSchema
       .find()
       .limit(4)
       .sort({ $natural: -1 });
+    const allPosts = await categoriesPostSchema.aggregate([
+      { $sample: { size: 18 } },
+    ]);
 
-    console.log(posts);
     return res.status(200).send({
-      msg: "Keturi Naujausi Postai surasti",
-      post: posts,
+      msg: "Naujausi Sukurti Postai",
+      newPost: newPosts,
+      allNewPosts: allPosts,
     });
   },
+
+  SingleUserPost: async (req, res) => {
+    const { id } = req.params;
+    // const postAndUserInfo=[]
+    const userPost = await categoriesPostSchema.find({ _id: id });
+
+    const userInformation = await usersSchema.find({ email: userPost[0].user });
+
+    return res.status(200).send({
+      msg: "Rastas Useris Ir Jo Postas",
+      post: userPost,
+      user: userInformation,
+    });
+  },
+  GetPostsByCategory: async (req, res) => {
+    const { categoryName } = req.params;
+
+    const CategoryPost = await categoriesPostSchema.find({
+      category: categoryName,
+    });
+
+    return res.status(200).send({
+      msg: "Rastas Postas Pagal Kategorija",
+      post: CategoryPost,
+    });
+  },
+  // FilterPosts: async (req, res) => {
+  //   const {
+  //     priceOne,
+  //     priceTwo,
+  //     searchingOrOffer,
+  //     condition: con,
+  //     // categoryName: cat,
+  //   } = req.body;
+  //   console.log("price", priceOne);
+  //   console.log("priceTwo", priceTwo);
+  //   console.log("search", searchingOrOffer);
+  //   console.log("condition", con);
+
+  //   const CategoryPostFilter = await categoriesPostSchema.find({
+  //     price: { $gt: Number(priceOne), $lt: Number(priceTwo) },
+  //     searchingOrOffer,
+  //     // category: cat,
+  //   });
+  //   console.log("sssssssss");
+  //   console.log(CategoryPostFilter);
+  //   console.log("ssssssss");
+  //   return res.status(200).send({
+  //     msg: "Atfiltruoti Postai",
+  //     post: "",
+  //   });
+  // },
 };

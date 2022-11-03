@@ -15,7 +15,10 @@ const {
   getUserPost,
   getFindAndDeletePost,
   EditUserPost,
-  getFourPosts,
+  GetLimitedCreatedPosts,
+  SingleUserPost,
+  GetPostsByCategory,
+  FilterPosts,
 } = require("../controllers/MainController");
 
 router.post("/register", emailValid, passwordValidator, register);
@@ -28,7 +31,10 @@ router.get("/getAllPosts", getAllCreatedPosts);
 router.get("/userPost", getUserPost);
 router.get("/deletePost/:id", getFindAndDeletePost);
 router.post("/editActivePost", postValidator, EditUserPost);
-router.get("/getFourPosts", getFourPosts);
+router.get("/getLimitedCreatedPosts", GetLimitedCreatedPosts);
+router.get("/singleUserPost/:id", SingleUserPost);
+router.get("/categoryPost/:categoryName", GetPostsByCategory);
+// router.post("/filterPost", FilterPosts);
 
 module.exports = router;
 
