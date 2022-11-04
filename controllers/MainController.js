@@ -2,7 +2,7 @@ const usersSchema = require("../schemas/userSchema");
 const categoriesPostSchema = require("../schemas/Categories");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
-
+const ITEMS_PER_PAGE = 2;
 module.exports = {
   register: async (req, res) => {
     const { email, passwordOne: password } = req.body;
@@ -241,10 +241,36 @@ module.exports = {
       user: userInformation,
     });
   },
+  // GetPostsByCategory: async (req, res) => {
+  //   const { categoryName } = req.params;
+  //   // const page=req.query.p || 0
+  //   // const booksPerPage=3
+  //   const query = {
+  //     category:
+  //       categoryName === "allCategories"
+  //         ? [
+  //             "transport",
+  //             "realEsate",
+  //             "job",
+  //             "houseHold",
+  //             "computer",
+  //             "machinery",
+  //           ]
+  //         : categoryName,
+  //   };
+  //   const CategoryPost = await categoriesPostSchema.find(query);
+  //   // .skip(page * booksPerPage).limit(booksPerPage)
+
+  //   return res.status(200).send({
+  //     msg: "Rastas Postas Pagal Kategorija",
+  //     post: CategoryPost,
+  //   });
+  // },
+
   GetPostsByCategory: async (req, res) => {
     const { categoryName } = req.params;
-
-    const CategoryPost = await categoriesPostSchema.find({
+    const page = req.query.page || 1;
+    const query = {
       category:
         categoryName === "allCategories"
           ? [
@@ -256,9 +282,23 @@ module.exports = {
               "machinery",
             ]
           : categoryName,
-    });
-
+    };
+    const skip = (page - 1) * ITEMS_PER_PAGE;
+    const count = await categoriesPostSchema.find(query);
+    const countLength = count.length;
+    console.log(countLength);
+    const CategoryPost = await categoriesPostSchema
+      .find(query)
+      .skip(skip)
+      .limit(3);
+    // .skip(page * booksPerPage).limit(booksPerPage)
+    const pageCount = countLength / ITEMS_PER_PAGE;
+    console.log(pageCount);
     return res.status(200).send({
+      pagination: {
+        countLength,
+        pageCount,
+      },
       msg: "Rastas Postas Pagal Kategorija",
       post: CategoryPost,
     });
