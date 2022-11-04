@@ -19,6 +19,7 @@ const {
   SingleUserPost,
   GetPostsByCategory,
   FilterPosts,
+  characterSearch,
 } = require("../controllers/MainController");
 
 router.post("/register", emailValid, passwordValidator, register);
@@ -35,6 +36,7 @@ router.get("/getLimitedCreatedPosts", GetLimitedCreatedPosts);
 router.get("/singleUserPost/:id", SingleUserPost);
 router.get("/categoryPost/:categoryName", GetPostsByCategory);
 router.post("/filterPost", FilterPosts);
+router.get("/searchInput/:character", characterSearch);
 
 module.exports = router;
 

@@ -33,6 +33,10 @@ const Categories = new Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const exoportCategories = mongoose.model("Post-Categories", Categories);

@@ -294,4 +294,15 @@ module.exports = {
       post: CategoryPostFilter,
     });
   },
+  characterSearch: async (req, res) => {
+    const { character } = req.params;
+    console.log(character);
+    const searchByCharacter = await categoriesPostSchema.find({
+      title: { $regex: new RegExp("^" + character + ".*", "i") },
+    });
+    return res.status(200).send({
+      msg: "Ieskomas",
+      search: searchByCharacter,
+    });
+  },
 };
