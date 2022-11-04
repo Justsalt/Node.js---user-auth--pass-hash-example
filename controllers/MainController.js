@@ -245,7 +245,17 @@ module.exports = {
     const { categoryName } = req.params;
 
     const CategoryPost = await categoriesPostSchema.find({
-      category: categoryName,
+      category:
+        categoryName === "allCategories"
+          ? [
+              "transport",
+              "realEsate",
+              "job",
+              "houseHold",
+              "computer",
+              "machinery",
+            ]
+          : categoryName,
     });
 
     return res.status(200).send({
@@ -253,30 +263,35 @@ module.exports = {
       post: CategoryPost,
     });
   },
-  // FilterPosts: async (req, res) => {
-  //   const {
-  //     priceOne,
-  //     priceTwo,
-  //     searchingOrOffer,
-  //     condition: con,
-  //     // categoryName: cat,
-  //   } = req.body;
-  //   console.log("price", priceOne);
-  //   console.log("priceTwo", priceTwo);
-  //   console.log("search", searchingOrOffer);
-  //   console.log("condition", con);
+  FilterPosts: async (req, res) => {
+    const { priceOne, priceTwo, searchingOrOffer, condition, categoryName } =
+      req.body;
+    console.log(priceOne);
+    console.log(categoryName);
 
-  //   const CategoryPostFilter = await categoriesPostSchema.find({
-  //     price: { $gt: Number(priceOne), $lt: Number(priceTwo) },
-  //     searchingOrOffer,
-  //     // category: cat,
-  //   });
-  //   console.log("sssssssss");
-  //   console.log(CategoryPostFilter);
-  //   console.log("ssssssss");
-  //   return res.status(200).send({
-  //     msg: "Atfiltruoti Postai",
-  //     post: "",
-  //   });
-  // },
+    const CategoryPostFilter = await categoriesPostSchema.find({
+      price: { $gte: Number(priceOne), $lte: Number(priceTwo) },
+      searchingOrOffer:
+        searchingOrOffer === "all" ? ["searching", "offer"] : searchingOrOffer,
+      condition: condition === "all" ? ["new", "used"] : condition,
+      category:
+        categoryName === "allCategories"
+          ? [
+              "transport",
+              "realEsate",
+              "job",
+              "houseHold",
+              "computer",
+              "machinery",
+            ]
+          : categoryName,
+    });
+    console.log("sssssssss");
+
+    console.log("ssssssss");
+    return res.status(200).send({
+      msg: "Atfiltruoti Postai",
+      post: CategoryPostFilter,
+    });
+  },
 };
