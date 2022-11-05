@@ -34,7 +34,7 @@ router.get("/deletePost/:id", getFindAndDeletePost);
 router.post("/editActivePost", postValidator, EditUserPost);
 router.get("/getLimitedCreatedPosts", GetLimitedCreatedPosts);
 router.get("/singleUserPost/:id", SingleUserPost);
-router.get("/categoryPost/:categoryName", GetPostsByCategory);
+router.get("/categoryPosts/:categoryName", GetPostsByCategory);
 router.post("/filterPost", FilterPosts);
 router.get("/searchInput/:character", characterSearch);
 
