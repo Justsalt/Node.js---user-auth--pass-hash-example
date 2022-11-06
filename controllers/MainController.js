@@ -282,11 +282,10 @@ module.exports = {
       .find(query)
       .skip(skip)
       .limit(3);
-    console.log(CategoryPost);
+
     // .skip(page * booksPerPage).limit(booksPerPage)
     const pageCount = countLength / ITEMS_PER_PAGE;
-    console.log(pageCount);
-    console.log(countLength);
+
     return res.status(200).send({
       pagination: {
         countLength,
@@ -300,8 +299,7 @@ module.exports = {
   FilterPosts: async (req, res) => {
     const { priceOne, priceTwo, searchingOrOffer, condition, categoryName } =
       req.body;
-    console.log(priceOne);
-    console.log(priceTwo);
+    console.log(categoryName);
     const CategoryPostFilter = await categoriesPostSchema
       .find({
         price: { $gte: Number(priceOne), $lte: Number(priceTwo) },
