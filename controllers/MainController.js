@@ -241,34 +241,26 @@ module.exports = {
       user: userInformation,
     });
   },
-  // GetPostsByCategory: async (req, res) => {
-  //   const { categoryName } = req.params;
-  //   // const page=req.query.p || 0
-  //   // const booksPerPage=3
-  //   const query = {
-  //     category:
-  //       categoryName === "allCategories"
-  //         ? [
-  //             "transport",
-  //             "realEsate",
-  //             "job",
-  //             "houseHold",
-  //             "computer",
-  //             "machinery",
-  //           ]
-  //         : categoryName,
-  //   };
-  //   const CategoryPost = await categoriesPostSchema.find(query);
-  //   // .skip(page * booksPerPage).limit(booksPerPage)
-
-  //   return res.status(200).send({
-  //     msg: "Rastas Postas Pagal Kategorija",
-  //     post: CategoryPost,
-  //   });
-  // },
 
   GetPostsByCategory: async (req, res) => {
     const { categoryName } = req.params;
+    const maxValue = await categoriesPostSchema
+      .find({
+        category:
+          categoryName === "allCategories"
+            ? [
+                "transport",
+                "realEsate",
+                "job",
+                "houseHold",
+                "computer",
+                "machinery",
+              ]
+            : categoryName,
+      })
+      .sort({ price: 1 })
+      .select("price");
+
     const page = req.query.page || 1;
     const query = {
       category:
@@ -286,14 +278,15 @@ module.exports = {
     const skip = (page - 1) * ITEMS_PER_PAGE;
     const count = await categoriesPostSchema.find(query);
     const countLength = count.length;
-    console.log(countLength);
     const CategoryPost = await categoriesPostSchema
       .find(query)
       .skip(skip)
       .limit(3);
+    console.log(CategoryPost);
     // .skip(page * booksPerPage).limit(booksPerPage)
     const pageCount = countLength / ITEMS_PER_PAGE;
     console.log(pageCount);
+    console.log(countLength);
     return res.status(200).send({
       pagination: {
         countLength,
@@ -301,34 +294,36 @@ module.exports = {
       },
       msg: "Rastas Postas Pagal Kategorija",
       post: CategoryPost,
+      price: maxValue,
     });
   },
   FilterPosts: async (req, res) => {
     const { priceOne, priceTwo, searchingOrOffer, condition, categoryName } =
       req.body;
     console.log(priceOne);
-    console.log(categoryName);
+    console.log(priceTwo);
+    const CategoryPostFilter = await categoriesPostSchema
+      .find({
+        price: { $gte: Number(priceOne), $lte: Number(priceTwo) },
+        searchingOrOffer:
+          searchingOrOffer === "all"
+            ? ["searching", "offer"]
+            : searchingOrOffer,
+        condition: condition === "all" ? ["new", "used"] : condition,
+        category:
+          categoryName === "allCategories"
+            ? [
+                "transport",
+                "realEsate",
+                "job",
+                "houseHold",
+                "computer",
+                "machinery",
+              ]
+            : categoryName,
+      })
+      .limit(3);
 
-    const CategoryPostFilter = await categoriesPostSchema.find({
-      price: { $gte: Number(priceOne), $lte: Number(priceTwo) },
-      searchingOrOffer:
-        searchingOrOffer === "all" ? ["searching", "offer"] : searchingOrOffer,
-      condition: condition === "all" ? ["new", "used"] : condition,
-      category:
-        categoryName === "allCategories"
-          ? [
-              "transport",
-              "realEsate",
-              "job",
-              "houseHold",
-              "computer",
-              "machinery",
-            ]
-          : categoryName,
-    });
-    console.log("sssssssss");
-
-    console.log("ssssssss");
     return res.status(200).send({
       msg: "Atfiltruoti Postai",
       post: CategoryPostFilter,
@@ -336,7 +331,6 @@ module.exports = {
   },
   characterSearch: async (req, res) => {
     const { character } = req.params;
-    console.log(character);
     const searchByCharacter = await categoriesPostSchema.find({
       title: { $regex: new RegExp("^" + character + ".*", "i") },
     });

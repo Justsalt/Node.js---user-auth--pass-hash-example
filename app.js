@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes/router");
 const session = require("express-session");
+const dotenv = require("dotenv").config();
 
 app.use(
   session({
@@ -21,9 +22,7 @@ app.use(
   })
 );
 mongoose
-  .connect(
-    "mongodb+srv://admin:admin@cluster0.8nlynj9.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("CONNECTED OK");
   })
@@ -33,6 +32,9 @@ mongoose
 
 app.use(express.json());
 
-app.listen(4000);
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log("Server started on port ");
+});
 
 app.use("/", mainRouter);
