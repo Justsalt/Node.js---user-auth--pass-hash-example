@@ -39,6 +39,3 @@ router.post("/filterPost", FilterPosts);
 router.get("/searchInput/:character", characterSearch);
 
 module.exports = router;
-
-// vista@gmail.com
-// aaaaaaaa12B
