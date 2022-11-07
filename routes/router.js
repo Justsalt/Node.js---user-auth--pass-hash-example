@@ -4,33 +4,36 @@ const { passwordValidator } = require("../midleware/passwordValidator");
 const { emailValid } = require("../midleware/EmailValidator");
 const { profileValid } = require("../midleware/ProfileValidator");
 const { postValidator } = require("../midleware/CreatingPostValidator");
+
+const { register } = require("../controllers/RegisterController");
+const { Login } = require("../controllers/LoginController");
+const { LogOut } = require("../controllers/LogOutController");
+const { UserDataExtra } = require("../controllers/UserDataExtraController");
+const { UserDataGet } = require("../controllers/UserDataGetController");
+const { PostCategory } = require("../controllers/PostCategory");
+const { GetUserPost } = require("../controllers/GetUserPostController");
+const { GetAllCreatedPosts } = require("../controllers/GetAllCreatedPosts");
+const { GetFindAndDeletePost } = require("../controllers/GetFindAndDeletePost");
+const { EditUserPost } = require("../controllers/EditUserPost");
+const { SingleUserPost } = require("../controllers/SingleUserPost");
 const {
-  register,
-  login,
-  logOut,
-  userDataExtra,
-  userDataGet,
-  postCategory,
-  getAllCreatedPosts,
-  getUserPost,
-  getFindAndDeletePost,
-  EditUserPost,
   GetLimitedCreatedPosts,
-  SingleUserPost,
+} = require("../controllers/GetLimitedCreatedPosts");
+const {
   GetPostsByCategory,
   FilterPosts,
-  characterSearch,
-} = require("../controllers/MainController");
+} = require("../controllers/FilterPosts/Filter");
+const { characterSearch } = require("../controllers/CharacterSearch");
 
 router.post("/register", emailValid, passwordValidator, register);
-router.post("/login", login);
-router.get("/logOut", logOut);
-router.post("/userData", profileValid, userDataExtra);
-router.get("/userDataGet", userDataGet);
-router.post("/categoryPost", postValidator, postCategory);
-router.get("/getAllPosts", getAllCreatedPosts);
-router.get("/userPost", getUserPost);
-router.get("/deletePost/:id", getFindAndDeletePost);
+router.post("/login", Login);
+router.get("/logOut", LogOut);
+router.post("/userData", profileValid, UserDataExtra);
+router.get("/userDataGet", UserDataGet);
+router.post("/categoryPost", postValidator, PostCategory);
+router.get("/getAllPosts", GetAllCreatedPosts);
+router.get("/userPost", GetUserPost);
+router.get("/deletePost/:id", GetFindAndDeletePost);
 router.post("/editActivePost", postValidator, EditUserPost);
 router.get("/getLimitedCreatedPosts", GetLimitedCreatedPosts);
 router.get("/singleUserPost/:id", SingleUserPost);
