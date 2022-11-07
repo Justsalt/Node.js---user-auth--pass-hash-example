@@ -24,14 +24,14 @@ module.exports = {
         msg: "Skelbimo Antraštė turi būti tarp 1-20 simbolių,.!",
       });
     }
-    if (price.length < 1 || price.length > 7) {
+    if (price.length < 1 || price.length > 9) {
       return res.status(400).send({
-        msg: "Maksimali kaina yra 7 Skaičių.",
+        msg: "Maksimali kaina yra 9 Skaičių.",
       });
     }
     if (description.length < 1 || description.length >= 125) {
       return res.status(400).send({
-        msg: "Aprašymas turi būti ilgesnis nei vienas simbolis ir trumpesnis nei 125 simboliai.!",
+        msg: "Aprašymas turi būti tarp 1 ir 125 simbolių.!",
       });
     }
     if (!searchingOrOffer) {
