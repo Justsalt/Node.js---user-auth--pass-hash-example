@@ -2,7 +2,7 @@ const usersSchema = require("../schemas/userSchema");
 const categoriesPostSchema = require("../schemas/Categories");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 3;
 module.exports = {
   register: async (req, res) => {
     const { email, passwordOne: password } = req.body;
@@ -300,6 +300,9 @@ module.exports = {
     const { priceOne, priceTwo, searchingOrOffer, condition, categoryName } =
       req.body;
     console.log(categoryName);
+    console.log(priceTwo);
+    console.log(condition);
+    console.log(searchingOrOffer);
     const CategoryPostFilter = await categoriesPostSchema
       .find({
         price: { $gte: Number(priceOne), $lte: Number(priceTwo) },
@@ -321,7 +324,7 @@ module.exports = {
             : categoryName,
       })
       .limit(3);
-
+    console.log(CategoryPostFilter);
     return res.status(200).send({
       msg: "Atfiltruoti Postai",
       post: CategoryPostFilter,
